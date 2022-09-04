@@ -16,19 +16,6 @@ public class Porrada : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    /*private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Teste");
-        if (collision.collider != IgnorableCollider)
-        {
-            if (Input.GetKey(AttackButton))
-            {
-                if (TryGetComponent<Porrada>(out Porrada porrada)) porrada.GetDamage(transform.position);
-            }
-        }
-    }*/
-
     private void OnTriggerStay(Collider other)
     {
         Debug.Log("Teste 1");

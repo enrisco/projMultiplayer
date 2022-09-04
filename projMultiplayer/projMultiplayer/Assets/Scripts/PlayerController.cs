@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
     public float forca_Pulo;
     public bool podePular;
 
-    Vector3 move;
-
     Rigidbody rigbd;
     void Start()
     {
@@ -46,9 +44,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        move = new Vector3(movX * velocidade, 0, movZ * velocidade);
-
-        rigbd.velocity = move * Time.deltaTime;
+        rigbd.velocity = new Vector3(movX * velocidade, rigbd.velocity.y, movZ * velocidade);
     }
 
     private void OnCollisionEnter(Collision collision)
