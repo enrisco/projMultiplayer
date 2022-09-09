@@ -7,6 +7,12 @@ TagManager:
   - Arena
   - Player1
   - Player2
+  - AumentoDePeso
+  - Lentidao
+  - DiminuicaoPulo
+  - LimCampoVisao
+  - InverterControles
+  - Banana
   layers:
   - Default
   - TransparentFX
