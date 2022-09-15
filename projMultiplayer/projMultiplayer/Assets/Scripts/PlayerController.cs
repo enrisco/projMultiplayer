@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public float forca_Pulo;
     public bool podePular;
 
-    Rigidbody rigbd;
+    public static Rigidbody rigbd;
     void Start()
     {
         rigbd = GetComponent<Rigidbody>();
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space) && podePular)
             {
-                rigbd.AddForce(Vector3.up * forca_Pulo, ForceMode.Impulse);
+                rigbd.AddForce(Vector3.up * forca_Pulo * PowerUps.forcaPuloDeBuff, ForceMode.Impulse);
             }
         }
 
@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigbd.velocity = new Vector3(movX * velocidade, rigbd.velocity.y, movZ * velocidade);
+        rigbd.velocity = new Vector3(movX * velocidade * PowerUps.velocidadeDeBuff, rigbd.velocity.y, movZ * velocidade * PowerUps.velocidadeDeBuff);
     }
 
     private void OnCollisionEnter(Collision collision)

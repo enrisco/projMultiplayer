@@ -36,7 +36,7 @@ public class PowerUps : MonoBehaviour
             if (gameObject.tag == "AumentoDePeso")
             {
                 tempo = 0f;
-                //PlayerController.rigbd.mass = 2f;
+                PlayerController.rigbd.mass = 2f;
                 forcaPuloDeBuff = 2f;
             }
 
