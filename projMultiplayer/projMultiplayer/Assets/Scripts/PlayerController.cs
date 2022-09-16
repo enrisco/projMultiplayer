@@ -10,6 +10,10 @@ public class PlayerController : MonoBehaviour
     public float forca_Pulo;
     public bool podePular;
 
+    [Header("Combat")]
+    [SerializeField] KeyCode AttackButton;
+    [SerializeField] float KnockbackStrenght;
+
     public static Rigidbody rigbd;
     void Start()
     {
@@ -44,7 +48,14 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigbd.velocity = new Vector3(movX * velocidade * PowerUps.velocidadeDeBuff, rigbd.velocity.y, movZ * velocidade * PowerUps.velocidadeDeBuff);
+        rigbd.velocity = new Vector3
+        (
+            (transform.forward.x * movZ) * velocidade * PowerUps.velocidadeDeBuff, 
+            rigbd.velocity.y,
+            (transform.forward.z * movZ) * velocidade * PowerUps.velocidadeDeBuff
+        );
+
+        transform.Rotate(new Vector3(0, movX, 0) * velocidade);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -60,5 +71,20 @@ public class PlayerController : MonoBehaviour
         {
             podePular = false;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (Input.GetKey(AttackButton))
+        {
+            if (other.TryGetComponent<PlayerController>(out PlayerController player))
+                player.GetDamage(transform.position);
+        }
+    }
+
+    public void GetDamage(Vector3 strikerPosition)
+    {
+        Vector3 direction = ((strikerPosition - transform.position) * -1).normalized;
+        rigbd.AddForce(direction * KnockbackStrenght, ForceMode.Impulse);
     }
 }
