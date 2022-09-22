@@ -3,17 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUps : MonoBehaviour
-{
+{   
+    public enum DeBuffType
+    {
+        Lentidao,
+        AumentoDePeso,
+        DiminuicaoDePulo,
+        LimitarCampoVisao,
+        InverterControles,
+        Banana,
+        BloquearAtaque
+    };
+    public DeBuffType tipoDeBuff;
+
     Rigidbody rigbd;
     public float tempo;
     public float tempoLimite;
     public static float velocidadeDeBuff = 1f;
     public static float forcaPuloDeBuff = 1f;
     public GameObject telaSuja;
+    public static bool ataqueBloqueado;
+
     void Start()
     {
         tempo = -1f;
         telaSuja.SetActive(false);
+        ataqueBloqueado = false;
     }
 
     void Update()
@@ -26,6 +41,7 @@ public class PowerUps : MonoBehaviour
             forcaPuloDeBuff = 1f;
             telaSuja.SetActive(false);
             tempo = -1f;
+            ataqueBloqueado = false;
         }
     }
 
@@ -33,40 +49,45 @@ public class PowerUps : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player1")
         {
-            if (gameObject.tag == "AumentoDePeso")
+            if (tipoDeBuff == DeBuffType.AumentoDePeso)
             {
                 tempo = 0f;
-                PlayerController.rigbd.mass = 2f;
                 forcaPuloDeBuff = 2f;
             }
 
-            if (gameObject.tag == "Lentidao") 
+            if (tipoDeBuff == DeBuffType.Lentidao) 
             {
                 tempo = 0f;
                 velocidadeDeBuff = 0.5f;
             }
 
-            if (gameObject.tag == "DiminuicaoPulo")
+            if (tipoDeBuff == DeBuffType.DiminuicaoDePulo)
             {
                 tempo = 0f;
                 forcaPuloDeBuff = 0.5f;
             }
 
-            if (gameObject.tag == "LimCampoVisao")
+            if (tipoDeBuff == DeBuffType.LimitarCampoVisao)
             {
                 tempo = 0f;
                 telaSuja.SetActive(true);
             }
 
-            if (gameObject.tag == "InverterControles")
+            if (tipoDeBuff == DeBuffType.InverterControles)
             {
                 tempo = 0f;
                 velocidadeDeBuff = -0.5f;
             }
 
-            if (gameObject.tag == "Banana")
+            if (tipoDeBuff == DeBuffType.Banana)
             {
                 collision.gameObject.transform.position = new Vector3(collision.gameObject.transform.position.x, collision.gameObject.transform.position.y, collision.transform.position.z + 6);
+            }
+
+            if (tipoDeBuff == DeBuffType.BloquearAtaque) 
+            {
+                tempo = 0f;
+                ataqueBloqueado = true;
             }
         }
     }
