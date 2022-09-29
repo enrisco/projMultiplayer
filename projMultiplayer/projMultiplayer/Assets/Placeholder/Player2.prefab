@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 894946344997434408}
   - component: {fileID: 894946344997434411}
   - component: {fileID: 894946344997434410}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player2
   m_TagString: Player2
   m_Icon: {fileID: 0}
@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47873991095955966}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.39, y: 0, z: 8.06}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 2896569173168411049}
   - {fileID: 7297782771483075895}
@@ -80,11 +80,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movX: 0
   movZ: 0
-  velocidade: 10
+  velocidade: 5
   forca_Pulo: 5
-  podePular: 0
+  podePular1: 0
+  podePular2: 0
   AttackButton: 51
   KnockbackStrenght: 5
+  rigbd: {fileID: 0}
 --- !u!1 &894946345816523657
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 894946345816523662}
   - component: {fileID: 894946345816523663}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HitZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +142,7 @@ GameObject:
   - component: {fileID: 2896569173168411049}
   - component: {fileID: 8748286680756301696}
   - component: {fileID: 871459428392203042}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ecelon_Ecelon_Shrek
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +223,7 @@ GameObject:
   - component: {fileID: 7297782771483075895}
   - component: {fileID: 5343551309906542352}
   - component: {fileID: 3457762090523861906}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ecelon_Ecelon_shrekshirt_S
   m_TagString: Untagged
   m_Icon: {fileID: 0}

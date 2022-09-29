@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
             movX = Input.GetAxis("Horizontal2");
             movZ = Input.GetAxis("Vertical2");
 
-            if (Input.GetKeyDown(KeyCode.End) && podePular2)
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) && podePular2)
             {
                 rigbd.AddForce(Vector3.up * forca_Pulo, ForceMode.Impulse);
             }
