@@ -5,14 +5,15 @@ using UnityEngine;
 public class PlataformChooserController : MonoBehaviour
 {
     [SerializeField] GameObject[] Plataforms;
+    public Rigidbody PlataformRigidbody;
 
     public void Spawn(int index)
     {
-        Instantiate
+        PlataformRigidbody = Instantiate
         (
             Plataforms[index],
             transform
-        );
+        ).GetComponent<Rigidbody>();
     }
 
     void Start()

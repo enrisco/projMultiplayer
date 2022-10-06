@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -27,16 +28,29 @@ public class GameController : MonoBehaviour
     [SerializeField] Transform triaP1;
     [SerializeField] Transform triaP2;
     PlataformTypes PlataformType;
+
+    [Header("Timer")]
+    [SerializeField] GameObject TxtTimer;
+    [SerializeField] int TimeInMinutes;
+    double TotalInSeconds;
+    TimeSpan Timer;
     // Start is called before the first frame update
     void Awake()
     {
         SpawnObjects();
     }
 
+    private void Start()
+    {
+        Timer = new TimeSpan(0, TimeInMinutes, 0);
+        TotalInSeconds = Timer.TotalSeconds;
+        InvokeRepeating("DecreaseTimer", 0f, 1f);
+    }
+
     // Update is called once per frame
     void SpawnObjects()
     {
-        int r = Random.Range(0, 4);
+        int r = UnityEngine.Random.Range(0, 4);
 
         switch (r)
         {
@@ -70,6 +84,28 @@ public class GameController : MonoBehaviour
             Player2,
             player2Pos
         );
+    }
+
+    void DecreaseTimer()
+    {
+        if(Timer.TotalSeconds > 0)
+        {
+            Timer = Timer.Subtract(new TimeSpan(0, 0, 1));
+            UIManager.SetText(TxtTimer, FormatTime(Timer));
+            ChangePlataformMass();
+        }
+    }
+
+    void ChangePlataformMass()
+    {
+        if (Timer.TotalSeconds == (TotalInSeconds * 75) / 100) PlataformChooser.PlataformRigidbody.mass = 7.5f;
+        else if (Timer.TotalSeconds == (TotalInSeconds * 50) / 100) PlataformChooser.PlataformRigidbody.mass = 5f;
+        else if (Timer.TotalSeconds == (TotalInSeconds * 25) / 100) PlataformChooser.PlataformRigidbody.mass = 1f;
+    }
+
+    string FormatTime(TimeSpan time)
+    {
+        return $"{time.Minutes}:{time.Seconds:00}";
     }
 
     private void Update()
