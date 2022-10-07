@@ -16,79 +16,71 @@ public class PowerUps : MonoBehaviour
     };
     public DeBuffType tipoDeBuff;
 
-    Rigidbody rigbd;
-    public float tempo;
-    public float tempoLimite;
-    public static float velocidadeDeBuff = 1f;
-    public static float forcaPuloDeBuff = 1f;
-    public GameObject telaSuja;
-    public static bool ataqueBloqueado;
+    GameObject colidiu;
+    float velDeslize = 100;
 
     void Start()
     {
-        tempo = -1f;
-        telaSuja.SetActive(false);
-        ataqueBloqueado = false;
+        
     }
 
     void Update()
     {
-        if (tempo >= 0f && tempo <= tempoLimite) tempo += Time.deltaTime;
-        if (tempo >= tempoLimite)
-        {
-            //PlayerController.rigbd.mass = 1f;
-            velocidadeDeBuff = 1f;
-            forcaPuloDeBuff = 1f;
-            telaSuja.SetActive(false);
-            tempo = -1f;
-            ataqueBloqueado = false;
-        }
+        
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player1")
+        if (collision.gameObject.tag == "Player1" || collision.gameObject.tag == "Player2")
         {
+            colidiu = collision.gameObject;
+
             if (tipoDeBuff == DeBuffType.AumentoDePeso)
             {
-                tempo = 0f;
-                forcaPuloDeBuff = 2f;
+                collision.gameObject.GetComponent<Rigidbody>().mass = 2f;
+                collision.gameObject.GetComponent<PlayerController>().forcaPuloDeBuff = 2f;
+                colidiu.GetComponent<PlayerController>().tempo = 0;
             }
 
-            if (tipoDeBuff == DeBuffType.Lentidao) 
+            else if (tipoDeBuff == DeBuffType.Lentidao) 
             {
-                tempo = 0f;
-                velocidadeDeBuff = 0.5f;
+                collision.gameObject.GetComponent<PlayerController>().velocidadeDeBuff = 0.5f;
+                colidiu.GetComponent<PlayerController>().tempo = 0;
             }
 
-            if (tipoDeBuff == DeBuffType.DiminuicaoDePulo)
+            else if (tipoDeBuff == DeBuffType.DiminuicaoDePulo)
             {
-                tempo = 0f;
-                forcaPuloDeBuff = 0.5f;
+                collision.gameObject.GetComponent<PlayerController>().forcaPuloDeBuff = 0.5f;
+                colidiu.GetComponent<PlayerController>().tempo = 0;
             }
 
-            if (tipoDeBuff == DeBuffType.LimitarCampoVisao)
+            else if (tipoDeBuff == DeBuffType.LimitarCampoVisao)
             {
-                tempo = 0f;
-                telaSuja.SetActive(true);
+                colidiu.GetComponent<PlayerController>().tempo = 0;
+                colidiu.GetComponent<PlayerController>().telaSuja.SetActive(true);
             }
 
-            if (tipoDeBuff == DeBuffType.InverterControles)
+            else if (tipoDeBuff == DeBuffType.InverterControles)
             {
-                tempo = 0f;
-                velocidadeDeBuff = -0.5f;
+                collision.gameObject.GetComponent<PlayerController>().velocidadeDeBuff = -0.5f;
+                colidiu.GetComponent<PlayerController>().tempo = 0;
             }
 
-            if (tipoDeBuff == DeBuffType.Banana)
+            else if (tipoDeBuff == DeBuffType.Banana)
             {
-                collision.gameObject.transform.position = new Vector3(collision.gameObject.transform.position.x, collision.gameObject.transform.position.y, collision.transform.position.z + 6);
+                colidiu.GetComponent<PlayerController>().podeAndar = false;
+                Vector3 direction = (transform.position - colidiu.transform.position).normalized;
+                colidiu.GetComponent<Rigidbody>().AddForce(direction * velDeslize, ForceMode.Impulse);
+                colidiu.GetComponent<PlayerController>().tempo = 0;
             }
 
-            if (tipoDeBuff == DeBuffType.BloquearAtaque) 
+            else if (tipoDeBuff == DeBuffType.BloquearAtaque) 
             {
-                tempo = 0f;
-                ataqueBloqueado = true;
+                collision.gameObject.GetComponent<PlayerController>().ataqueBloqueado = false;
+                colidiu.GetComponent<PlayerController>().tempo = 0;
             }
+
+            Destroy(gameObject);
         }
     }
 }

@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movimentação")]
     public float movX;
     public float movZ;
     public float velocidade;
     public float forca_Pulo;
-    public bool podePular1;
-    public bool podePular2;
+    public bool podePular;
+
+    [Header("DeBuffs")]
+    public bool ataqueBloqueado;
+    public bool podeAndar;
+    public float velocidadeDeBuff = 1f;
+    public float forcaPuloDeBuff = 1f;
+    public float tempo;
+    public float tempoLimite;
+    public GameObject telaSuja;
 
     [Header("Combat")]
     [SerializeField] KeyCode AttackButton;
@@ -19,19 +28,41 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rigbd = GetComponent<Rigidbody>();
+        ataqueBloqueado = false;
+        podeAndar = true;
+        tempo = -1;
+        telaSuja.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (tempo >= 0f && tempo <= tempoLimite) tempo += Time.deltaTime;
+
+        if (tempo >= 0.8)
+        {
+            podeAndar = true;
+            tempo = -1;
+        }
+
+        if (tempo >= tempoLimite)
+        {
+            rigbd.mass = 1;
+            ataqueBloqueado = true;
+            telaSuja.SetActive(false);
+            velocidadeDeBuff = 1f;
+            forcaPuloDeBuff = 1f;
+            tempo = -1;
+        }
+
         if (gameObject.tag == "Player1")
         {
             movX = Input.GetAxis("Horizontal1");
             movZ = Input.GetAxis("Vertical1");
 
-            if (Input.GetKeyDown(KeyCode.Space) && podePular1)
+            if (Input.GetKeyDown(KeyCode.Space) && podePular)
             {
-                rigbd.AddForce(Vector3.up * forca_Pulo * PowerUps.forcaPuloDeBuff, ForceMode.Impulse);
+                rigbd.AddForce(Vector3.up * forca_Pulo * forcaPuloDeBuff, ForceMode.Impulse);
             }
         }
 
@@ -40,23 +71,26 @@ public class PlayerController : MonoBehaviour
             movX = Input.GetAxis("Horizontal2");
             movZ = Input.GetAxis("Vertical2");
 
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) && podePular2)
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) && podePular)
             {
-                rigbd.AddForce(Vector3.up * forca_Pulo, ForceMode.Impulse);
+                rigbd.AddForce(Vector3.up * forca_Pulo * forcaPuloDeBuff, ForceMode.Impulse);
             }
         }
     }
 
     void FixedUpdate()
     {
-        rigbd.velocity = new Vector3
-        (
-            (transform.forward.x * movZ) * velocidade * PowerUps.velocidadeDeBuff, 
-            rigbd.velocity.y,
-            (transform.forward.z * movZ) * velocidade * PowerUps.velocidadeDeBuff
-        );
+        if (podeAndar == true)
+        {
+            rigbd.velocity = new Vector3
+            (
+                (transform.forward.x * movZ) * velocidade * velocidadeDeBuff,
+                rigbd.velocity.y,
+                (transform.forward.z * movZ) * velocidade * velocidadeDeBuff
+            );
 
-        transform.Rotate(new Vector3(0, movX, 0) * velocidade);
+            transform.Rotate(new Vector3(0, movX, 0) * velocidade);
+        }
     }
 
 
@@ -64,34 +98,20 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.collider.tag == "Arena")
         {
-            if (gameObject.tag == "Player1") 
-            {
-                podePular1 = true; 
-            }
-            if (gameObject.tag == "Player2") 
-            {
-                podePular2 = true;
-            }
+            podePular = true;
         }
     }
     private void OnCollisionExit(Collision collision)
     {
         if (collision.collider.tag == "Arena")
         {
-            if (gameObject.tag == "Player1")
-            {
-                podePular1 = false;
-            }
-            if (gameObject.tag == "Player2")
-            {
-                podePular2 = false;
-            }
+            podePular = false;
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (Input.GetKey(AttackButton) && PowerUps.ataqueBloqueado == false)
+        if (Input.GetKey(AttackButton) && ataqueBloqueado == false)
         {
             if (other.TryGetComponent<PlayerController>(out PlayerController player))
                 player.GetDamage(transform.position);
