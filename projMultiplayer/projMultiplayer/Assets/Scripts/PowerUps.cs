@@ -57,7 +57,7 @@ public class PowerUps : MonoBehaviour
             else if (tipoDeBuff == DeBuffType.LimitarCampoVisao)
             {
                 colidiu.GetComponent<PlayerController>().tempo = 0;
-                colidiu.GetComponent<PlayerController>().telaSuja.SetActive(true);
+                //colidiu.GetComponent<PlayerController>().telaSuja.SetActive(true);
             }
 
             else if (tipoDeBuff == DeBuffType.InverterControles)
