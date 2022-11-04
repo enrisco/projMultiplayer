@@ -12,4 +12,14 @@ class UIManager
     {
         output.GetComponent<TextMeshProUGUI>().text = text.ToString();
     }
+
+    public static void AddText(GameObject output, object text)
+    {
+        output.GetComponent<TextMeshProUGUI>().text += text.ToString();
+    }
+
+    public static string ReturnHexTextColor(GameObject color)
+    {
+        return ColorUtility.ToHtmlStringRGB(color.GetComponent<SpriteRenderer>().color);
+    }
 }

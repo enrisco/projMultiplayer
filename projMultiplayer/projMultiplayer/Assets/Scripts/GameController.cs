@@ -80,13 +80,13 @@ public class GameController : NetworkBehaviour
     {
         Instantiate
         (
-            Player1,
+            GameData.PlayerOneCharacter,
             player1Pos
         );
 
         Instantiate
         (
-            Player2,
+            GameData.PlayerTwoCharacter,
             player2Pos
         );
     }*/
