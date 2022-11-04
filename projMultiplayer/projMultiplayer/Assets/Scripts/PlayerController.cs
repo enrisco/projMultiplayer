@@ -28,12 +28,15 @@ public class PlayerController : NetworkBehaviour
 
     public Rigidbody rigbd;
     [SerializeField] private ulong client;
+    public GameObject p1;
     void Start()
     {
         rigbd = GetComponent<Rigidbody>();
         ataqueBloqueado = false;
         podeAndar = true;
         tempo = -1;
+        p1 = GameObject.Find("NetworkManager");
+        transform.position = p1.transform.position;
         //telaSuja.SetActive(false);
     }
 
@@ -60,40 +63,18 @@ public class PlayerController : NetworkBehaviour
             tempo = -1;
         }
 
-        if (gameObject.tag == "Player1")
-        {
-            movX = Input.GetAxis("Horizontal1");
-            movZ = Input.GetAxis("Vertical1");
+        movX = Input.GetAxis("Horizontal1");
+        movZ = Input.GetAxis("Vertical1");
 
-            if (Input.GetKeyDown(KeyCode.Space) && podePular)
-            {
-                rigbd.AddForce(Vector3.up * forca_Pulo * forcaPuloDeBuff, ForceMode.Impulse);
-            }
+        if (Input.GetKeyDown(KeyCode.Space) && podePular)
+        {
+            rigbd.AddForce(Vector3.up * forca_Pulo * forcaPuloDeBuff, ForceMode.Impulse);
         }
-
-        /*if (gameObject.tag == "Player2")
-        {
-            movX = Input.GetAxis("Horizontal2");
-            movZ = Input.GetAxis("Vertical2");
-
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) && podePular)
-            {
-                rigbd.AddForce(Vector3.up * forca_Pulo * forcaPuloDeBuff, ForceMode.Impulse);
-            }
-        }*/
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
             TestServerRPC(new ServerRpcParams());
             TestClientRPC(new ClientRpcParams() { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { client } } });
-
-            /*randomNumber.Value = new MyCustomData
-            {
-                _int = Random.Range(1, 100),
-                _bool = false,
-                playerName = "Jorge " + OwnerClientId
-            };*/
-            //Debug.Log("Player " + OwnerClientId + " => randomNumber: " + randomNumber.Value);
         }
     }
 
@@ -122,6 +103,15 @@ public class PlayerController : NetworkBehaviour
         if (collision.collider.tag == "Arena")
         {
             podePular = true;
+        }
+
+        if (collision.gameObject.tag == "DeBuff") 
+        {
+            ataqueBloqueado = collision.gameObject.GetComponent<PowerUps>().ataqueBloqueado;
+            velocidadeDeBuff = collision.gameObject.GetComponent<PowerUps>().velocidadeDebuff;
+            forcaPuloDeBuff = collision.gameObject.GetComponent<PowerUps>().forcaPuloDebuff;
+            rigbd.mass = collision.gameObject.GetComponent<PowerUps>().massa;
+            tempo = 0f;
         }
     }
     private void OnCollisionExit(Collision collision)

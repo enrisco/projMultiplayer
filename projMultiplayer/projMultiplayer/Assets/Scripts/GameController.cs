@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Unity.Netcode;
 
-public class GameController : MonoBehaviour
+public class GameController : NetworkBehaviour
 {
     [Header("Controllers")]
     [SerializeField] PlataformChooserController PlataformChooser;
@@ -56,22 +57,26 @@ public class GameController : MonoBehaviour
         {
             case 0: 
                 PlataformType = PlataformTypes.Rectangular;
-                SpawnPlayers(rectP1, rectP2); break;
+                //SpawnPlayers(rectP1, rectP2);
+                break;
             case 1: 
                 PlataformType = PlataformTypes.Circular;
-                SpawnPlayers(circP1, circP2); break;
+                //SpawnPlayers(circP1, circP2);
+                break;
             case 2: 
                 PlataformType = PlataformTypes.Hexagonal;
-                SpawnPlayers(hexaP1, hexaP2); break;
+                //SpawnPlayers(hexaP1, hexaP2);
+                break;
             case 3: 
                 PlataformType = PlataformTypes.Triangular;
-                SpawnPlayers(triaP1, triaP2); break;
+                //SpawnPlayers(triaP1, triaP2);
+                break;
         }
 
         PlataformChooser.Spawn(r);
     }
 
-    void SpawnPlayers(Transform player1Pos, Transform player2Pos)
+    /*void SpawnPlayers(Transform player1Pos, Transform player2Pos)
     {
         Instantiate
         (
@@ -84,7 +89,7 @@ public class GameController : MonoBehaviour
             Player2,
             player2Pos
         );
-    }
+    }*/
 
     void DecreaseTimer()
     {

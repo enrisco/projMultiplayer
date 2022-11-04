@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlataformChooserController : MonoBehaviour
+public class PlataformChooserController : NetworkBehaviour
 {
     [SerializeField] GameObject[] Plataforms;
     public Rigidbody PlataformRigidbody;
