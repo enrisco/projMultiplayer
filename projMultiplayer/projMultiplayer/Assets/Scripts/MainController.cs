@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
-public class MainController : MonoBehaviour
+public class MainController : NetworkBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] GameObject btnHost;
@@ -24,7 +25,6 @@ public class MainController : MonoBehaviour
 
     public void OnHostButtonClicked()
     {
-        NetworkManager.Singleton.StartHost();
         btnHost.SetActive(false);
         btnClient.SetActive(false);
         btnExit.SetActive(false);
@@ -38,6 +38,13 @@ public class MainController : MonoBehaviour
         btnClient.SetActive(false);
         btnExit.SetActive(false);
         pnlClient.SetActive(true);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+    }
+
+    public void OnTwoPlayersButtonClicked() 
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        NetworkManager.Singleton.StartHost();
     }
 
     public void OnExitButtonClicked()

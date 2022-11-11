@@ -51,6 +51,8 @@ public class GameController : NetworkBehaviour
     // Update is called once per frame
     void SpawnObjects()
     {
+        if (!IsHost) return;
+
         int r = UnityEngine.Random.Range(0, 4);
 
         switch (r)

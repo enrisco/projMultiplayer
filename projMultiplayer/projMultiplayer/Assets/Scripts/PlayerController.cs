@@ -26,17 +26,15 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] KeyCode AttackButton;
     [SerializeField] float KnockbackStrenght;
 
-    public Rigidbody rigbd;
+     Rigidbody rigbd;
     [SerializeField] private ulong client;
-    public GameObject p1;
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         rigbd = GetComponent<Rigidbody>();
         ataqueBloqueado = false;
         podeAndar = true;
         tempo = -1;
-        p1 = GameObject.Find("NetworkManager");
-        transform.position = p1.transform.position;
         //telaSuja.SetActive(false);
     }
 
