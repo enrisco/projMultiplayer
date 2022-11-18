@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
 
-public class GameController : NetworkBehaviour
+public class GameController :MonoBehaviour
 {
+    [Header("Skybox")]
+    [SerializeField]
+    Texture[] skybox;
+
+    [SerializeField] RawImage spriteSky;
+    
     [Header("Controllers")]
     [SerializeField] PlataformChooserController PlataformChooser;
 
@@ -51,7 +58,7 @@ public class GameController : NetworkBehaviour
     // Update is called once per frame
     void SpawnObjects()
     {
-        if (!IsHost) return;
+        //if (!IsHost) return;
 
         int r = UnityEngine.Random.Range(0, 4);
 
@@ -75,6 +82,7 @@ public class GameController : NetworkBehaviour
                 break;
         }
 
+        spriteSky.texture = skybox[r];
         PlataformChooser.Spawn(r);
     }
 
